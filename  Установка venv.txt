@@ -1,0 +1,12 @@
+Установка виртуального окружения
+# Windows
+python -m venv venv
+# Lunix
+python3 -m venv venv
+
+
+Активация виртуального окружения
+# Windows
+.\venv\Scripts\activate
+# Lunix
+source venv/bin/activate
