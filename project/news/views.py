@@ -2,15 +2,13 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import News, Category
 from .forms import *
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 
 class HomeNews(ListView):
     model = News
     template_name = 'news/home_news_list.html'
     context_object_name = 'news'
-
-    # extra_context = {'title': 'Главная'}
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(HomeNews, self).get_context_data(**kwargs)
@@ -34,6 +32,7 @@ class NewsByCategory(ListView):
     model = News
     template_name = 'news/home_news_list.html'
     context_object_name = 'news'
+    allow_empty = False  # Пустой спискани курсатмайди
 
     def get_queryset(self):
         return News.objects.filter(category_id=self.kwargs['category_id'], is_published=True)
@@ -44,16 +43,23 @@ class NewsByCategory(ListView):
         return context
 
 
-def get_category(request, category_id):
-    news = News.objects.filter(category_id=category_id)
-    category = Category.objects.get(pk=category_id)
-    context = {
-        'news': news,
-        'title': 'Список новостей',
-        'category': category
+# def get_category(request, category_id):
+#     news = News.objects.filter(category_id=category_id)
+#     category = Category.objects.get(pk=category_id)
+#     context = {
+#         'news': news,
+#         'title': 'Список новостей',
+#         'category': category
+#
+#     }
+#     return render(request, template_name='news/category.html', context=context)
 
-    }
-    return render(request, template_name='news/category.html', context=context)
+
+class ViewNews(DetailView):
+    model = News
+    context_object_name = 'news_item'
+    # pk_url_kwarg = 'news_id'
+    # template_name = 'news_detail.html'
 
 
 def view_news(request, news_id):
