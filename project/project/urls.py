@@ -20,6 +20,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('captcha/', include('captcha.urls')),
     path('', include('news.urls'))  # браузерда news-га мурожаат килинса news/urls.py файлига переадресация килади
 
 ]
@@ -30,3 +32,6 @@ if settings.DEBUG:
                       path('__debug__/', include('debug_toolbar.urls')),
                   ] + urlpatterns
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
